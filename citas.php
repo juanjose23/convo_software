@@ -2,10 +2,12 @@
 require_once "include/header.php";
 require_once "conexion.php";
 $db = conectar::conexion();
-$sql = "SELECT *
-FROM persona
-JOIN trabajador ON persona.id = trabajador.id_persona
-JOIN persona_natural ON persona.id = persona_natural.id_persona";
+$sql = "SELECT c.id, s.nombre AS servicio, p.nombre AS cliente, c.motivo, c.fecha, c.hora, c.estado
+FROM cita c
+INNER JOIN servicios_citas s ON c.id_servicios = s.id
+INNER JOIN cliente cl ON c.id_cliente = cl.id
+INNER JOIN persona p ON cl.id_persona = p.id;
+";
 $resultado = $db->query($sql);
 if ($resultado) {
     $array_resultado = array();
@@ -24,12 +26,12 @@ $db->close();
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Trabajadores</h1>
+                    <h1>Citas</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Trabajadores</a></li>
-                        <li class="breadcrumb-item active">Gestion de trabajadores</li>
+                        <li class="breadcrumb-item"><a href="#">Citas</a></li>
+                        <li class="breadcrumb-item active">Gestion de citas</li>
                     </ol>
                 </div>
             </div>
@@ -45,9 +47,9 @@ $db->close();
                     <!-- /.card -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Lista de Colaboradores</h3>
+                            <h3 class="card-title">Lista de Citas</h3>
                             <div class="align-content-end text-right">
-                                <a href="crear_trabajador.php" class="btn btn-success">Crear trabajador</a>
+                                <a href="crear_trabajador.php" class="btn btn-success">Crear citas</a>
                             </div>
                         </div>
                         <!-- /.card-header -->
@@ -56,28 +58,26 @@ $db->close();
                                 <thead>
                                     <tr>
                                         <th>Codigo</th>
-                                        <th>Nombre</th>
-                                        <th>Apellido</th>
-                                        <th>Codigo Inss</th>
-                                        <th>Telefono</th>
-                                        <th>Especialidad</th>
-                                        <th>Direccion</th>
-                                        <th>Correo</th>
+                                        <th>Cita</th>
+                                        <th>Cliente</th>
+                                        <th>Motivo</th>
+                                        <th>Fecha</th>
+                                        <th>Hora</th>
                                         <th>Estado</th>
+                                      
                                         <th>Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($array_resultado as $row) : ?>
                                         <tr>
-                                            <td><?php echo $row['codigo_trabajador']; ?></td>
-                                            <td><img src="img/<?php echo $row['foto']; ?>" alt="" width="30"> <?php echo $row['nombre']; ?></td>
-                                            <td><?php echo $row['apellido']; ?></td>
-                                            <td><?php echo $row['codigo_inss']; ?></td>
-                                            <td><?php echo $row['telefono']; ?></td>
-                                            <td><?php echo $row['especialidades']; ?></td>
-                                            <td><?php echo $row['direccion_domicilio']; ?></td>
-                                            <td><?php echo $row['correo']; ?></td>
+                                            <td><?php echo $row['id']; ?></td>
+                                            <td> <?php echo $row['servicio']; ?></td>
+                                            <td><?php echo $row['cliente']; ?></td>
+                                            <td><?php echo $row['motivo']; ?></td>
+                                            <td><?php echo $row['fecha']; ?></td>
+                                            <td><?php echo $row['hora']; ?></td>
+                                          
                                             <td>
                                                 <?php
                                                 $estado = $row['estado'];
