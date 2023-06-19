@@ -69,7 +69,7 @@ VALUES
 
 
 
-INSERT INTO enfermades (id_persona, tipo_sangre, tipo_enfermedad, descripcion_enfermades, alergias)
+INSERT INTO enfermedades (id_persona, tipo_sangre, tipo_enfermedades, descripcion_enfermedades, alergias)
 VALUES (1, 'A+', 'Diabetes', 'Paciente con diabetes tipo 2 controlada con medicación.', 'Ninguna alergia conocida'),
        (2, 'B-', 'Asma', 'Paciente asmático crónico con necesidad de inhalador.', 'Alergia al polen'),
        (3, 'O+', 'Hipertensión', 'Paciente con presión arterial alta controlada con medicación.', 'Alergia a la penicilina'),
