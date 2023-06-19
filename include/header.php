@@ -102,8 +102,7 @@
                             <a href="cliente.php" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>
-                                    Clientes
-
+                                    Pacientes
                                 </p>
                             </a>
                         </li>
@@ -473,7 +472,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-header">Pasar es pasar</li>
+                        <!--li class="nav-header">Pasar es pasar</li-->
                         <li class="nav-item">
                             <a href="" class="nav-link">
                                 <i class="nav-icon fas fa-ellipsis-h"></i>

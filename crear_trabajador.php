@@ -5,6 +5,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $cedula = $_POST["cedula"];
+<<<<<<< HEAD
+=======
+    $inss = $_POST["codigo_inns"];
+    $especialidad = $_POST["especialidad"];
+>>>>>>> 14973406b29624d24d4d8790182e36cd98554efa
     $telefono = $_POST["telefono"];
     $correo = $_POST["correo"];
     $nacionalidad = $_POST["nacionalidad"];
@@ -66,12 +71,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Agregar Paciente</h1>
+                    <h1>Agregar Trabajador</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Agregar Paciente</a></li>
-                        <li class="breadcrumb-item active">Gestion de Pacientes</li>
+                        <li class="breadcrumb-item"><a href="#">Agregar Trabajador</a></li>
+                        <li class="breadcrumb-item active">Gestion de trabajadores</li>
                     </ol>
                 </div>
             </div>
@@ -87,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">Pacientes</h3>
+                            <h3 class="card-title">Trabajadores </h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -115,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Telefono</label>
+                                                <label for="exampleInputEmail1">Teléfono</label>
                                                 <input type="text" name="telefono" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
@@ -187,19 +192,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Tipo de paciente</label>
+                                                <label for="exampleInputEmail1">Cargo</label>
                                                 <select name="tipo_paciente" class="selectpicker form-control" id="tipo_paciente">
                                                     <option value="">Selecciona una opción</option>
                                                     <option value="Nuevo">Nuevo</option>
-                                                    <option value="Reingreso">Reingreso</option>
-                                                    <option value="Emergencia">Emergencia</option>
-                                                    <option value="Pediátrico">Pediátrico</option>
-                                                    <option value="Geriátrico">Geriátrico</option>
-                                                    <option value="Control/Preventivo">Control/Preventivo</option>
-                                                    <option value="Derivado">Derivado</option>
-                                                    <option value="Hospitalizado">Hospitalizado</option>
-                                                    <option value="Crónico">Crónico</option>
-                                                    <option value="Oncológico">Oncológico</option>
+                                                    <option value="Reingreso">Contador</option>
+                                                    <option value="Emergencia">Secretaria</option>
+                                                    <option value="Pediátrico">Enfermera</option>
+                                                    <option value="Geriátrico">Camillero</option>
+                                                    <option value="Control/Preventivo">Médico</option>
                                                     <!-- Agrega más opciones según los tipos de pacientes que tengas en tu clínica -->
                                                 </select>
 
@@ -207,51 +208,39 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Tipo de sangre</label>
+                                                <label for="exampleInputEmail1">Tipo de contrato</label>
                                                 <select name="tipo_sangre" class="selectpicker form-control" id="tipo_sangre" value="">
                                                     <option value="">Selecciona una opción</option>
-                                                    <optgroup label="Grupo A">
-                                                        <option value="A+">A+</option>
-                                                        <option value="A-">A-</option>
-                                                    </optgroup>
-                                                    <optgroup label="Grupo B">
-                                                        <option value="B+">B+</option>
-                                                        <option value="B-">B-</option>
-                                                    </optgroup>
-                                                    <optgroup label="Grupo AB">
-                                                        <option value="AB+">AB+</option>
-                                                        <option value="AB-">AB-</option>
-                                                    </optgroup>
-                                                    <optgroup label="Grupo O">
-                                                        <option value="O+">O+</option>
-                                                        <option value="O-">O-</option>
+                                                    <optgroup label="Contrato">
+                                                        <option value="indeterminado">Contrato indeterminado</option>
+                                                        <option value="determinado">Contrato determinado</option>
+                                                        <option value="temporal">Contrato tempooral</option>
+                                                        <option value="periodo de prueba">Contrato periodo de prueba</option>
                                                     </optgroup>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Tipo de enfermedad</label>
+                                                <label for="exampleInputEmail1">Estado Civil</label>
                                                 <select name="tipo_enfermedad" class="selectpicker form-control" id="tipo_sangre" value="">
                                                     <option value="">Selecciona una opción</option>
-                                                    <option value="aguda_no_contagiosa">Aguda no contagiosa</option>
-                                                    <option value="aguda_contagiosa">Aguda contagiosa</option>
-                                                    <option value="cronica_no_contagiosa">Crónica no contagiosa</option>
-                                                    <option value="cronica_contagiosa">Crónica contagiosa</option>
-                                                    <option value="No tiene">No padece</option>
+                                                    <option value="casada">casada</option>
+                                                    <option value="soltera">soltera</option>
+                                                    <option value="Comprometida">Comprometida</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Alergias</label>
+                                                <label for="exampleInputEmail1">Especialidades</label>
                                                 <textarea type="text" class="form-control" name="alergias" id="exampleInputEmail1" placeholder="Enfermedades"></textarea>
 
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Descripcion de enfermedades</label>
+                                                <label for="exampleInputEmail1">Descripcion de Especialidades</label>
                                                 <textarea type="text" class="form-control" name="enfermedades" id="exampleInputEmail1" placeholder="Enfermedades"></textarea>
                                             </div>
                                         </div>
@@ -275,7 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Agregar</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
                     </div>
