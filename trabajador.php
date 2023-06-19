@@ -12,8 +12,6 @@ if ($resultado) {
     while ($fila = $resultado->fetch_assoc()) {
         $array_resultado[] = $fila;
     }
-
-    print_r($array_resultado);
 } else {
     echo "Error en la consulta: " . $db->error;
 }
@@ -80,7 +78,17 @@ $db->close();
                                             <td><?php echo $row['especialidades']; ?></td>
                                             <td><?php echo $row['direccion_domicilio']; ?></td>
                                             <td><?php echo $row['correo']; ?></td>
-                                            <td><?php echo $row['estado']; ?></td>
+                                            <td>
+                                                <?php
+                                                $estado = $row['estado'];
+                                                if ($estado == 1) {
+                                                    echo "Activo";
+                                                } else {
+                                                    echo "Inactivo";
+                                                }
+                                                ?>
+
+                                            </td>
                                             <td>
                                                 <a class="btn btn-danger">Eliminar</a>
                                                 <a class="btn btn-warning">Actualizar</a>
