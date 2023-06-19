@@ -593,3 +593,106 @@
             </div>
             <!-- /.sidebar -->
         </aside>
+
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Ingresar colaborador</h1>
+          </div>
+        </div>
+      </div>
+    <section class="content-header">
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- general form elements -->
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Datos Generales</h3>
+              </div>
+
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form>
+                <div class="card-body">
+
+                <!--GRUPO 1-->
+                <div class="row">
+                  <div class="col-sm-6 form-group">
+                    <label for="exampleInputNombre1">Nombre</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  <div class="col-sm-6 form-group">
+                    <label for="exampleInputNombre1">Apellido</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  </div>
+
+                <!--GRUPO 2-->
+                <div class="row">
+                  <div class="col-sm-4 form-group">
+                    <label for="exampleInputNombre1">Nacionalidad</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  <div class="col-sm-4 form-group">
+                  <div class="form-group">
+                        <label>Género</label>
+                        <select class="form-control">
+                          <option>Femenino</option>
+                          <option>Masculino</option>
+                          <option>Otro</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="col-sm-4 form-group">
+                    <label for="exampleInputNombre1">Fecha de nacimiento</label>
+                    <input type="date" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  </div>
+
+                  
+                <!--GRUPO 3-->
+                <div class="row">
+                  <div class="col-sm-6 form-group">
+                    <label for="exampleInputNombre1">Tipo de sangre</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  <div class="col-sm-6 form-group">
+                    <label for="exampleInputNombre1">Alergias</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  </div>
+
+                <!--GRUPO 4-->
+                <div class="row">
+                  <div class="col-sm-6 form-group">
+                    <label for="exampleInputNombre1">Tipo de enfermedad</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="">
+                  </div>
+                  <div class="col-sm-6 form-group">
+                        <label>Textarea</label>
+                        <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+                  </div>
+                  </div>
+
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Agregar</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+</div>
+
+
+            <!-- /.card -->
