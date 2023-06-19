@@ -71,7 +71,7 @@ $db->close();
                                     <?php foreach ($array_resultado as $row) : ?>
                                         <tr>
                                             <td><?php echo $row['codigo_trabajador']; ?></td>
-                                            <td><img src="img/<?php echo $row['foto']; ?>" alt=""> <?php echo $row['nombre']; ?></td>
+                                            <td><img src="img/<?php echo $row['foto']; ?>" alt="" width="30"> <?php echo $row['nombre']; ?></td>
                                             <td><?php echo $row['apellido']; ?></td>
                                             <td><?php echo $row['codigo_inss']; ?></td>
                                             <td><?php echo $row['telefono']; ?></td>
