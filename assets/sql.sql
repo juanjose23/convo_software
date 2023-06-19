@@ -41,7 +41,7 @@ CREATE TABLE  enfermedades(
         id_persona INTEGER REFERENCES persona(id),
         tipo_sangre VARCHAR(250),
         tipo_enfermedades VARCHAR(120) NOT NULL,
-        descripcion_enfermades VARCHAR(250) NOT NULL,
+        descripcion_enfermedades VARCHAR(250) NOT NULL,
         alergias VARCHAR(250) NOT NULL
     );
 
