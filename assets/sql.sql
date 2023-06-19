@@ -1,5 +1,4 @@
-CREATE TABLE
-    sucursal (
+CREATE TABLE sucursal (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(120) NOT NULL,
         ruc VARCHAR(250) NOT NULL,
@@ -10,8 +9,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    persona (
+CREATE TABLE persona (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(80) NOT NULL,
         telefono INTEGER NOT NULL,
@@ -21,8 +19,7 @@ CREATE TABLE
         fecha_registro DATE
     );
 
-CREATE TABLE
-    persona_natural (
+CREATE TABLE persona_natural (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         apellido VARCHAR(120) NOT NULL,
@@ -31,8 +28,7 @@ CREATE TABLE
         genero CHAR
     );
 
-CREATE TABLE
-    persona_juridica(
+CREATE TABLE persona_juridica(
         id INTEGER PRIMARY key AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         ruc VARCHAR(250) NOT NULL,
@@ -40,8 +36,7 @@ CREATE TABLE
         fecha_constitucional DATE NOT NULL
     );
 
-CREATE TABLE
-    enfermades(
+CREATE TABLE  enfermades(
         id INTEGER PRIMARY key AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         tipo_sangre VARCHAR(250),
@@ -50,18 +45,17 @@ CREATE TABLE
         alergias VARCHAR(250) NOT NULL
     );
 
-CREATE TABLE
-    cliente (
+CREATE TABLE cliente (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona (id),
         id_sucursal INTEGER REFERENCES sucursal(id),
+        codigo_inss VARCHAR(100) NOT NULL,
         tipo VARCHAR(120) NOT NULL,
         foto VARCHAR(250),
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    proveedor(
+CREATE TABLE proveedor(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         sector_comercial VARCHAR(250) NOT NULL,
@@ -69,8 +63,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    proveedor_contacto (
+CREATE TABLE  proveedor_contacto (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         id_proveedor INTEGER REFERENCES proveedor(id),
@@ -78,15 +71,13 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    estado_civil (
+CREATE TABLE  estado_civil (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(120) NOT NULL,
         descripcion VARCHAR(250)
     );
 
-CREATE TABLE
-    trabajador (
+CREATE TABLE  trabajador (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         id_estado_civil INTEGER REFERENCES estado_civil(id),
@@ -99,8 +90,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    antecedentes_legal (
+CREATE TABLE antecedentes_legal (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_trabajador INTEGER REFERENCES trabajador(id),
         record VARCHAR(250) NOT NULL,
@@ -108,8 +98,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    contrato(
+CREATE TABLE  contrato(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_trabajador INTEGER REFERENCES trabajador(id),
         id_autorizacion INTEGER REFERENCES trabajador(id),
@@ -119,8 +108,7 @@ CREATE TABLE
         fecha_contrato DATE
     );
 
-CREATE TABLE
-    cargos (
+CREATE TABLE cargos (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         codigo VARCHAR(80) NOT NULL,
         nombre_cargo VARCHAR(80) NOT NULL,
@@ -128,9 +116,8 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    asignacion_cargos(
-        id INTEGER PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE asignacion_cargos(
+     id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_cargo INTEGER REFERENCES cargos(id),
         id_trabajador INTEGER REFERENCES trabajador(id),
         id_autorizacion INTEGER REFERENCES trabajador(id),
@@ -138,8 +125,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    salario (
+CREATE TABLE  salario (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_trabajador INTEGER REFERENCES trabajador(id),
         id_autorizacion INTEGER REFERENCES trabajador(id),
@@ -149,16 +135,14 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    categoria_servicio_cita (
+CREATE TABLE categoria_servicio_cita (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(120) NOT NULL,
         descripcion VARCHAR(250),
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    servicios_citas (
+CREATE TABLE  servicios_citas (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_categoria INTEGER REFERENCES categoria_servicio_cita(id),
         nombre VARCHAR(120) NOT NULL,
@@ -167,8 +151,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    precio_servicio (
+CREATE TABLE  precio_servicio (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_servicio INTEGER REFERENCES servicios(id),
         id_autorizado INTEGER REFERENCES trabajador(id),
@@ -182,38 +165,62 @@ CREATE TABLE cita (
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_servicios INTEGER REFERENCES servicios_citas(id),
     id_cliente INTEGER REFERENCES cliente(id),
-    id_doctor INTEGER REFERENCES trabajador(id),
     motivo VARCHAR(250) NOT NULL,
     fecha DATE  NOT NULL,
+    hora TIME NOT NULL,
     estado INTEGER NOT NULL
 );
 
-CREATE TABLE
-    categoria (
+CREATE TABLE detalle_cita(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id_cita INTEGER REFERENCES cita(id),
+    chequeo_fisico TEXT NOT NULL,
+    diagnostico TEXT NOT NULL
+);
+
+CREATE TABLE tratamiento(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id_doctor INTEGER REFERENCES trabajador(id),
+    id_paciente INTEGER REFERENCES cliente(id),
+    medicamento VARCHAR(250) NOT NULL,
+    dosis VARCHAR(250) NOT NULL,
+    fecha_registro DATE DEFAULT NOW()
+
+);
+CREATE TABLE historial_clinico
+(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    id_cita INTEGER REFERENCES  cita(id),
+    id_tratamiento INTEGER REFERENCES tratamiento(id),
+    id_paciente INTEGER REFERENCES cliente(id),
+    id_medico INTEGER REFERENCES trabajador(id),
+    descripcion VARCHAR(800) NOT NULL,
+    fecha_registro DATE,
+    hora_registro TIMESTAMP
+
+);
+CREATE TABLE categoria (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR (120) NOT NULL,
         descripcion VARCHAR(250),
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    unidad_medida (
+CREATE TABLE unidad_medida (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(120) NOT NULL,
         siglas VARCHAR(120) NOT NULL,
         equivalencia DECIMAL (10, 2)
     );
 
-CREATE TABLE
-    presentacion (
+CREATE TABLE  presentacion (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(120) NOT NULL,
         descripcion VARCHAR(250),
         estado INTEGER
     );
 
-CREATE TABLE
-    producto (
+CREATE TABLE  producto (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_categoria INTEGER REFERENCES categoria(id),
         id_unidad INTEGER REFERENCES unidad_medida(id),
@@ -226,8 +233,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    precio_producto (
+CREATE TABLE  precio_producto (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_producto INTEGER REFERENCES producto(id),
         precio_actual_compra DECIMAL(10, 2) NOT NULL,
@@ -238,8 +244,7 @@ CREATE TABLE
         estado INTEGER NOT NULL
     );
 
-CREATE TABLE
-    venta(
+CREATE TABLE venta(
         id INTEGER PRIMARY KEY,
         id_cliente INTEGER REFERENCES cliente(id),
         id_trabajador INTEGER REFERENCES trabajador(id),
@@ -252,8 +257,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    detalle_venta(
+CREATE TABLE detalle_venta_cita(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_venta INTEGER REFERENCES venta(id),
         id_cita INTEGER REFERENCES cita(id),
@@ -262,24 +266,21 @@ CREATE TABLE
         monto DECIMAL(10, 2)
     );
 
-CREATE TABLE
-    detalle_venta_producto(
+CREATE TABLE detalle_venta_producto(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_venta INTEGER REFERENCES venta(id),
         id_producto INTEGER REFERENCES producto(id),
         cantidad INTEGER NOT NULL
     );
 
-CREATE TABLE
-    tipo_caja(
+CREATE TABLE tipo_caja(
         id INTEGER PRIMARY KEY,
         nombre VARCHAR(80) NOT NULL,
         descripcion VARCHAR(250),
         estado INTEGER
     );
 
-CREATE TABLE
-    caja(
+CREATE TABLE caja(
         id INTEGER PRIMARY KEY,
         tipo INTEGER REFERENCES tipo_caja(id),
         id_ubicacion INTEGER REFERENCES sub_ubicacion_habitacion(id),
@@ -289,8 +290,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    apertura_caja(
+CREATE TABLE apertura_caja(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_caja INTEGER REFERENCES caja(id),
         id_trabajador INTEGER REFERENCES trabajador(id),
@@ -299,8 +299,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    detalle_apertura_caja(
+CREATE TABLE detalle_apertura_caja(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_apertura_caja INTEGER REFERENCES apertura_caja(id),
         monto_cordobas NUMERIC(10, 2),
@@ -309,8 +308,7 @@ CREATE TABLE
 
 
 
-CREATE TABLE
-    pago(
+CREATE TABLE pago(
         id INTEGER PRIMARY KEY,
         id_caja INTEGER REFERENCES caja(id),
         id_venta INTEGER REFERENCES venta(id),
@@ -321,8 +319,7 @@ CREATE TABLE
         cambio DECIMAL(10,2),
         fecha DATE
     );
-CREATE TABLE
-    egreso(
+CREATE TABLE  egreso(
         id INTEGER PRIMARY KEY,
         id_caja INTEGER REFERENCES caja(id),
         id_hecho INTEGER REFERENCES trabajador(id),
@@ -331,8 +328,7 @@ CREATE TABLE
         monto_total DECIMAL(10,2),
         fecha DATE
     );
-CREATE TABLE
-    tesoreria(
+CREATE TABLE tesoreria(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_caja INTEGER REFERENCES caja(id),
         autorizado INTEGER REFERENCES trabajador(id),
@@ -344,8 +340,7 @@ CREATE TABLE
         estado INTEGER 
     );
 
-CREATE TABLE
-    arqueo_caja(
+CREATE TABLE  arqueo_caja(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_caja INTEGER REFERENCES apertura(id),
         id_trabajador INTEGER REFERENCES trabajador(id),
@@ -362,8 +357,7 @@ CREATE TABLE detalle_arqueo (
         monton_billete DECIMAL(10,2) NOT NULL
     );
 
-CREATE TABLE
-    cierre_caja(
+CREATE TABLE  cierre_caja(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_caja INTEGER REFERENCES caja(id),
         monto_cordoba NUMERIC(10, 2),
@@ -372,8 +366,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    detalle_cierre_caja(
+CREATE TABLE  detalle_cierre_caja(
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_cierre_caja INTEGER REFERENCES cierre_caja(id),
         id_trabajador INTEGER REFERENCES trabajador(id),
@@ -381,16 +374,14 @@ CREATE TABLE
         motivo VARCHAR(250)
     );
 
-CREATE TABLE
-    grupo_usuario (
+CREATE TABLE grupo_usuario (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         nombre VARCHAR(80) NOT NULL,
         descripcion VARCHAR(100),
         estado INTEGER
     );
 
-CREATE TABLE
-    sub_grupo_usuario (
+CREATE TABLE sub_grupo_usuario (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_grupo INTEGER REFERENCES grupo_usuario(id),
         nombre VARCHAR(150) NOT NULL,
@@ -398,8 +389,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    usuario (
+CREATE TABLE  usuario (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         id_grupo INTEGER REFERENCES sub_grupo_usuario(id),
@@ -408,8 +398,7 @@ CREATE TABLE
         estado INTEGER
     );
 
-CREATE TABLE
-    detalle_usuario (
+CREATE TABLE detalle_usuario (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
         id_usuario INTEGER REFERENCES usuario(id),
         contraseña_anterior VARCHAR(60) NOT NULL,
