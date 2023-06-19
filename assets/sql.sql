@@ -36,11 +36,11 @@ CREATE TABLE persona_juridica(
         fecha_constitucional DATE NOT NULL
     );
 
-CREATE TABLE  enfermades(
+CREATE TABLE  enfermedades(
         id INTEGER PRIMARY key AUTO_INCREMENT,
         id_persona INTEGER REFERENCES persona(id),
         tipo_sangre VARCHAR(250),
-        tipo_enfermedad VARCHAR(120) NOT NULL,
+        tipo_enfermedades VARCHAR(120) NOT NULL,
         descripcion_enfermades VARCHAR(250) NOT NULL,
         alergias VARCHAR(250) NOT NULL
     );

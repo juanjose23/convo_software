@@ -1,25 +1,37 @@
-<?php 
+<?php
 require_once "include/header.php";
 require_once "conexion.php";
-$db= conectar::conexion();
-$sql="SELECT *
+$db = conectar::conexion();
+$sql = "SELECT *
 FROM persona
 JOIN trabajador ON persona.id = trabajador.id_persona
 JOIN persona_natural ON persona.id = persona_natural.id_persona";
-$resultado=$db->query($sql);
- ?>
+$resultado = $db->query($sql);
+if ($resultado) {
+    $array_resultado = array();
+    while ($fila = $resultado->fetch_assoc()) {
+        $array_resultado[] = $fila;
+    }
+
+    print_r($array_resultado);
+} else {
+    echo "Error en la consulta: " . $db->error;
+}
+
+$db->close();
+?>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>DataTables</h1>
+                    <h1>Trabajadores</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">DataTables</li>
+                        <li class="breadcrumb-item"><a href="#">Trabajadores</a></li>
+                        <li class="breadcrumb-item active">Gestion de trabajadores</li>
                     </ol>
                 </div>
             </div>
@@ -36,6 +48,9 @@ $resultado=$db->query($sql);
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Lista de Colaboradores</h3>
+                            <div class="align-content-end text-right">
+                                <a href="crear_trabajador.php" class="btn btn-success">Crear trabajador</a>
+                            </div>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -50,12 +65,28 @@ $resultado=$db->query($sql);
                                         <th>Direccion</th>
                                         <th>Telefono</th>
                                         <th>Correo</th>
+                                        <th>Estado</th>
+                                        <th>Accion</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
-                                    </tr>
+                                    <?php foreach ($array_resultado as $row) : ?>
+                                        <tr>
+                                            <td><?php echo $row['codigo_trabajador']; ?></td>
+                                            <td><img src="img/<?php echo $row['foto']; ?>" alt=""> <?php echo $row['nombre']; ?></td>
+                                            <td><?php echo $row['apellido']; ?></td>
+                                            <td><?php echo $row['codigo_inss']; ?></td>
+                                            <td><?php echo $row['telefono']; ?></td>
+                                            <td><?php echo $row['especialidades']; ?></td>
+                                            <td><?php echo $row['direccion_domicilio']; ?></td>
+                                            <td><?php echo $row['correo']; ?></td>
+                                            <td><?php echo $row['estado']; ?></td>
+                                            <td>
+                                                <a class="btn btn-danger">Eliminar</a>
+                                                <a class="btn btn-warning">Actualizar</a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
