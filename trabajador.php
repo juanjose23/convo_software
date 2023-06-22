@@ -63,14 +63,14 @@ $db->close();
                                         <th>Direccion</th>
                                         <th>Correo</th>
                                         <th>Estado</th>
-                                        <th>Accion</th>
+                                   
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($array_resultado as $row) : ?>
                                         <tr>
                                             <td><?php echo $row['codigo_trabajador']; ?></td>
-                                            <td><img src="img/<?php echo $row['foto']; ?>" alt="" width="30"> <?php echo $row['nombre']; ?></td>
+                                            <td><img src="<?php echo $row['foto']; ?>" alt="" width="30"> <?php echo $row['nombre']; ?></td>
                                             <td><?php echo $row['apellido']; ?></td>
                                             <td><?php echo $row['codigo_inss']; ?></td>
                                             <td><?php echo $row['telefono']; ?></td>
@@ -88,10 +88,7 @@ $db->close();
                                                 ?>
 
                                             </td>
-                                            <td>
-                                                <a class="btn btn-danger">Eliminar</a>
-                                                <a class="btn btn-warning">Actualizar</a>
-                                            </td>
+                                           
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

@@ -25,7 +25,9 @@ c.tipo,
 c.foto,
 c.id AS id_cliente,
 c.estado
-FROM persona p
+FROM
+cliente c
+INNER JOIN persona p ON c.id_persona = p.id
 LEFT JOIN persona_natural pn ON p.id = pn.id_persona
 LEFT JOIN enfermedades_personas ep ON p.id = ep.id_persona
 LEFT JOIN enfermedades e ON ep.id_enfermedades = e.id
@@ -34,7 +36,7 @@ LEFT JOIN tipos_sangre ts ON sp.id_tipos_sangre = ts.id
 LEFT JOIN alergias_personas ap ON p.id = ap.id_persona
 LEFT JOIN alergias a ON ap.id_alergias = a.id
 LEFT JOIN tipo_alergias tp ON a.id_tipo = tp.id
-LEFT JOIN cliente c ON p.id = c.id_persona";
+";
 
 $resultado = mysqli_query($conexion, $query);
 

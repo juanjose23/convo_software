@@ -12,14 +12,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $direccion = $_POST["direccion"];
     $fecha_nacimiento = $_POST["fecha_nacimiento"];
     $genero = $_POST["genero"];
-    $tipo_sangre = $_POST["tipo_sangre"];
-    $alergias = $_POST["alergias"];
-    $enfermedades = $_POST["enfermedades"];
+    $id_sangre = $_POST["tipo_sangre"];
+    $id_alergias = $_POST["alergias"];
+    $id_enfermedades = $_POST["tipo_enfermedad"];
+    $descripcion_antecedentes = $_POST['descripcion_antecedentes'];
+    $id_estado_civil = $_POST['estado_civil'];
     // Guardar la foto en la carpeta "img"
     $foto = $_FILES["foto"]["name"];
     $foto_tmp = $_FILES["foto"]["tmp_name"];
     $ruta_foto = "img/" . $foto;
     move_uploaded_file($foto_tmp, $ruta_foto);
+
+    $foto_record = $_FILES["foto_record"]["name"];
+    $foto_record_tmp = $_FILES["foto"]["tmp_name"];
+    $ruta_record_foto = "img/" . $foto;
+    move_uploaded_file($foto_record_tmp, $ruta_record_foto);
 
     // Realizar la conexión a la base de datos (reemplaza los valores con los de tu entorno)
     $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
@@ -53,19 +60,30 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $id_persona = mysqli_insert_id($conexion);
 
         // Insertar en la tabla "persona_natural"
-        $query_persona_natural = "INSERT INTO persona_natural (id_persona, apellido, fecha_nacimiento, cedula, genero)
-                              VALUES ('$id_persona', '$apellido', '$fecha_nacimiento', '$cedula', '$genero')";
+        $query_persona_natural = "INSERT INTO persona_natural (id_persona, apellido, fecha_nacimiento, cedula, genero)VALUES ('$id_persona', '$apellido', '$fecha_nacimiento', '$cedula', '$genero')";
         mysqli_query($conexion, $query_persona_natural);
 
         // Insertar en la tabla "enfermedades"
-        $query_enfermedades = "INSERT INTO enfermedades (id_persona, tipo_sangre, tipo_enfermedades, descripcion_enfermedades, alergias)
-                           VALUES ('$id_persona', '$tipo_sangre', '$tipo_enfermedad', '$enfermedades', '$alergias')";
+        $query_enfermedades = "INSERT INTO enfermedades_personas (id_persona, id_enfermedades, fecha_registro, estado)
+        VALUES('$id_persona','$id_enfermedades', NOW(), 1)";
         mysqli_query($conexion, $query_enfermedades);
+        // Insertar en la tabla "Tipo de sangre persona"
+        $query_sangres = "INSERT INTO sangre_personas (id_persona, id_tipos_sangre, fecha_registro, estado)
+        VALUES('$id_persona','$id_sangre', NOW(), 1)";
+        mysqli_query($conexion, $query_sangres);
+        // Insertar en la tabla alergias de personas
+        $query_sangres = "INSERT INTO alergias_personas (id_persona, id_alergias, fecha_registro, estado)
+        VALUES('$id_persona','$id_alergias', NOW(), 1)";
+        mysqli_query($conexion, $query_sangres);
         $codigo = "TRAB-" . $id_persona;
         // Insertar en la tabla "cliente"
-        $query_cliente = "INSERT INTO trabajador (id_persona,id_estado_civil,id_sucursal, codigo_trabajador,codigo_inss, especialidades, foto,fecha_ingreso ,estado)
-                      VALUES ('$id_persona',1,1 ,'$codigo','$inss','$especialidad', '$ruta_foto',NOW(), 1)";
+        $query_cliente = "INSERT INTO trabajador (id_persona,id_estado_civil,id_sucursal, codigo_trabajador,codigo_inss,foto,fecha_ingreso ,estado)
+                      VALUES ('$id_persona','$id_estado_civil',1 ,'$codigo','$inss', '$ruta_foto',NOW(), 1)";
         mysqli_query($conexion, $query_cliente);
+        $id_trabajador = mysqli_insert_id($conexion);
+        $query_antencedentes = "INSERT INTO antecedentes_legal (id_trabajador, record, descripcion, estado)
+        VALUES('$id_trabajador', '$ruta_record_foto', '$descripcion_antecedentes', 1)";
+         mysqli_query($conexion, $query_antencedentes);
     }
 }
 ?>
@@ -224,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         <div class="col-md-4">
                                             <div class="form-group">
                                                 <label for="exampleInputEmail1">Estado Civil</label>
-                                                <select name="tipo_enfermedad" class="form-control select2bs4" id="tipo_sangre" value="">
+                                                <select name="estado_civil" class="form-control select2bs4" id="estado_civil" value="">
                                                     <option value="">Selecciona una opción</option>
 
                                                     <?php
@@ -283,6 +301,66 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
+                                                <label for="exampleInputEmail1">Enfermedades:</label>
+                                                <select name="tipo_enfermedad" class="form-control select2bs4" id="tipo_enfermedad" value="">
+                                                    <option value="">Selecciona una opción</option>
+
+                                                    <?php
+                                                    // Paso 1: Establecer la conexión a la base de datos
+                                                    $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
+
+                                                    // Verificar si la conexión fue exitosa
+                                                    if (mysqli_connect_errno()) {
+                                                        echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+                                                        exit;
+                                                    }
+
+                                                    // Paso 2: Ejecutar la consulta SQL
+                                                    $resultado = mysqli_query($conexion, "SELECT id, nombre FROM enfermedades");
+
+                                                    // Paso 3: Recorrer los resultados y generar las opciones
+                                                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                                                        echo "<option value='" . $fila['id'] . "'>" . $fila['nombre'] . "</option>";
+                                                    }
+
+                                                    // Paso 4: Cerrar la etiqueta del select
+                                                    ?>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Alergias:</label>
+                                                <select name="alergias" class="form-control select2bs4" id="alergias" value="">
+                                                    <option value="">Selecciona una opción</option>
+
+                                                    <?php
+                                                    // Paso 1: Establecer la conexión a la base de datos
+                                                    $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
+
+                                                    // Verificar si la conexión fue exitosa
+                                                    if (mysqli_connect_errno()) {
+                                                        echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+                                                        exit;
+                                                    }
+
+                                                    // Paso 2: Ejecutar la consulta SQL
+                                                    $resultado = mysqli_query($conexion, "SELECT id, nombre FROM alergias");
+
+                                                    // Paso 3: Recorrer los resultados y generar las opciones
+                                                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                                                        echo "<option value='" . $fila['id'] . "'>" . $fila['nombre'] . "</option>";
+                                                    }
+
+                                                    // Paso 4: Cerrar la etiqueta del select
+                                                    ?>
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="exampleInputFile">Foto:</label>
                                                 <div class="input-group">
                                                     <div class="custom-file">
@@ -312,8 +390,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         <div class="col-md-8">
                                             <div class="form-group">
                                                 <label for="exampleInputFile">Descripcion de antecedentes</label>
-                                                <textarea class="form-control">
-                                                </textarea>                
+                                                <textarea class="form-control" name="descripcion_antecedentes">
+                                                </textarea>
                                             </div>
                                         </div>
 

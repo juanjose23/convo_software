@@ -78,16 +78,16 @@ VALUES
 
 INSERT INTO trabajador (id_persona, id_estado_civil, id_sucursal, codigo_trabajador, codigo_inss, foto, fecha_ingreso, estado)
 VALUES
-(6, 1, 1, 'TRAB-001', 'INSS-001', 'foto_trabajador_1.jpg', '2022-01-01', 1),
-(7, 2, 1, 'TRAB-002', 'INSS-002', 'foto_trabajador_2.jpg', '2022-02-02', 1),
-(8, 3, 1, 'TRAB-003', 'INSS-003', 'foto_trabajador_3.jpg', '2022-03-03', 1),
-(9, 4, 1, 'TRAB-004', 'INSS-004', 'foto_trabajador_4.jpg', '2022-04-04', 1),
-(10, 1, 1, 'TRAB-005', 'INSS-005', 'foto_trabajador_5.jpg', '2022-05-05', 1),
-( 11, 2, 1, 'TRAB-006', 'INSS-006', 'foto_trabajador_6.jpg', '2022-06-06', 1),
-( 12, 3, 1, 'TRAB-007', 'INSS-007', 'foto_trabajador_7.jpg', '2022-07-07', 1),
-( 13, 4, 1, 'TRAB-008', 'INSS-008', 'foto_trabajador_8.jpg', '2022-08-08', 1),
-( 14, 1, 1, 'TRAB-009', 'INSS-009', 'foto_trabajador_9.jpg', '2022-09-09', 1),
-( 15, 2, 1, 'TRAB-010', 'INSS-010', 'foto_trabajador_10.jpg', '2022-10-10', 1);
+(6, 1, 1, 'TRAB-001', 'INSS-001', 'img/foto_trabajador_1.jpg', '2022-01-01', 1),
+(7, 2, 1, 'TRAB-002', 'INSS-002', 'img/foto_trabajador_2.jpg', '2022-02-02', 1),
+(8, 3, 1, 'TRAB-003', 'INSS-003', 'img/foto_trabajador_3.jpg', '2022-03-03', 1),
+(9, 4, 1, 'TRAB-004', 'INSS-004', 'img/foto_trabajador_4.jpg', '2022-04-04', 1),
+(10, 1, 1, 'TRAB-005', 'INSS-005', 'img/foto_trabajador_5.jpg', '2022-05-05', 1),
+( 11, 2, 1, 'TRAB-006', 'INSS-006', 'img/foto_trabajador_6.jpg', '2022-06-06', 1),
+( 12, 3, 1, 'TRAB-007', 'INSS-007', 'img/foto_trabajador_7.jpg', '2022-07-07', 1),
+( 13, 4, 1, 'TRAB-008', 'INSS-008', 'img/foto_trabajador_8.jpg', '2022-08-08', 1),
+( 14, 1, 1, 'TRAB-009', 'INSS-009', 'img/foto_trabajador_9.jpg', '2022-09-09', 1),
+( 15, 2, 1, 'TRAB-010', 'INSS-010', 'img/foto_trabajador_10.jpg', '2022-10-10', 1);
 
 INSERT INTO antecedentes_legal (id_trabajador, record, descripcion, estado)
 VALUES
