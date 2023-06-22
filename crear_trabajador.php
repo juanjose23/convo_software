@@ -5,11 +5,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $cedula = $_POST["cedula"];
-<<<<<<< HEAD
-=======
-    $inss = $_POST["codigo_inns"];
-    $especialidad = $_POST["especialidad"];
->>>>>>> 14973406b29624d24d4d8790182e36cd98554efa
     $telefono = $_POST["telefono"];
     $correo = $_POST["correo"];
     $nacionalidad = $_POST["nacionalidad"];

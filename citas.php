@@ -49,7 +49,7 @@ $db->close();
                         <div class="card-header">
                             <h3 class="card-title">Lista de Citas</h3>
                             <div class="align-content-end text-right">
-                                <a href="crear_trabajador.php" class="btn btn-success">Crear citas</a>
+                                <a href="crear_cita.php" class="btn btn-success">Crear citas</a>
                             </div>
                         </div>
                         <!-- /.card-header -->

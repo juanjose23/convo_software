@@ -22,7 +22,7 @@ $resultado = mysqli_query($conexion, $query);
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Pancientes</a></li>
+                        <li class="breadcrumb-item"><a href="#">Pacientes</a></li>
                         <li class="breadcrumb-item active">Gestion de pacientes</li>
                     </ol>
                 </div>
@@ -39,9 +39,9 @@ $resultado = mysqli_query($conexion, $query);
                     <!-- /.card -->
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Lista de Clientes</h3>
+                            <h3 class="card-title">Lista de Pacientes</h3>
                             <div class="align-content-end text-right">
-                                <a href="crear_cliente.php" class="btn btn-success">Crear cliente</a>
+                                <a href="crear_cliente.php" class="btn btn-success">Crear pacientes</a>
                             </div>
                         </div>
                         <!-- /.card-header -->
