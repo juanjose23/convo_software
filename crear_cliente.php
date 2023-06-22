@@ -5,6 +5,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nombre = $_POST["nombre"];
     $apellido = $_POST["apellido"];
     $cedula = $_POST["cedula"];
+    $inss = $_POST["inss"];
     $telefono = $_POST["telefono"];
     $correo = $_POST["correo"];
     $nacionalidad = $_POST["nacionalidad"];
@@ -72,8 +73,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       VALUES('$id_persona','$id_alergias', NOW(), 1)";
         mysqli_query($conexion, $query_sangres);
         // Insertar en la tabla "cliente"
-        $query_cliente = "INSERT INTO cliente (id_persona, tipo, foto, estado)
-                      VALUES ('$id_persona', '$tipo_paciente', '$ruta_foto', 1)";
+        $query_cliente = "INSERT INTO cliente (id_persona,codigo_inss tipo, foto, estado)
+                      VALUES ('$id_persona','$inss','$tipo_paciente', '$ruta_foto', 1)";
         mysqli_query($conexion, $query_cliente);
     }
 }
