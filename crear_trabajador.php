@@ -7,16 +7,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $cedula = $_POST["cedula"];
     $telefono = $_POST["telefono"];
     $correo = $_POST["correo"];
+    $inss = $_POST["inss"];
     $nacionalidad = $_POST["nacionalidad"];
     $direccion = $_POST["direccion"];
     $fecha_nacimiento = $_POST["fecha_nacimiento"];
     $genero = $_POST["genero"];
-    $tipo_paciente = $_POST["tipo_paciente"];
     $tipo_sangre = $_POST["tipo_sangre"];
-    $tipo_enfermedad = $_POST["tipo_enfermedad"];
     $alergias = $_POST["alergias"];
     $enfermedades = $_POST["enfermedades"];
-
     // Guardar la foto en la carpeta "img"
     $foto = $_FILES["foto"]["name"];
     $foto_tmp = $_FILES["foto"]["tmp_name"];
@@ -31,34 +29,47 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         die("Error al conectar con la base de datos: " . mysqli_connect_error());
     }
 
-    // Insertar los datos en las tablas correspondientes
-    $fecha_registro = date("Y-m-d");
+    // Verificar si la cédula ya existe en la tabla "persona"
+    $consulta_cedula = "SELECT cedula FROM persona_natural WHERE cedula = '$cedula'";
+    $resultado_cedula = mysqli_query($conexion, $consulta_cedula);
 
-    // Insertar en la tabla "persona"
-    $query_persona = "INSERT INTO persona (nombre, telefono, direccion_domicilio, correo, nacionalidad, fecha_registro)
-                      VALUES ('$nombre', '$telefono', '$direccion', '$correo', '$nacionalidad', '$fecha_registro')";
-    mysqli_query($conexion, $query_persona);
+    if (mysqli_num_rows($resultado_cedula) > 0) {
+        // La cédula ya existe, no se realiza la inserción
+        echo '
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $("#modal-danger").modal("show");
+    });
+    </script>';
+        echo '
+       ';
+    } else {
+        // Insertar en la tabla "persona"
+        $query_persona = "INSERT INTO persona (nombre, telefono, direccion_domicilio, correo, nacionalidad, fecha_registro)
+                      VALUES ('$nombre', '$telefono', '$direccion', '$correo', '$nacionalidad', NOW())";
+        mysqli_query($conexion, $query_persona);
 
-    // Obtener el ID de la persona insertada
-    $id_persona = mysqli_insert_id($conexion);
+        // Obtener el ID de la persona insertada
+        $id_persona = mysqli_insert_id($conexion);
 
-    // Insertar en la tabla "persona_natural"
-    $query_persona_natural = "INSERT INTO persona_natural (id_persona, apellido, fecha_nacimiento, cedula, genero)
+        // Insertar en la tabla "persona_natural"
+        $query_persona_natural = "INSERT INTO persona_natural (id_persona, apellido, fecha_nacimiento, cedula, genero)
                               VALUES ('$id_persona', '$apellido', '$fecha_nacimiento', '$cedula', '$genero')";
-    mysqli_query($conexion, $query_persona_natural);
+        mysqli_query($conexion, $query_persona_natural);
 
-    // Insertar en la tabla "enfermedades"
-    $query_enfermedades = "INSERT INTO enfermedades (id_persona, tipo_sangre, tipo_enfermedades, descripcion_enfermedades, alergias)
+        // Insertar en la tabla "enfermedades"
+        $query_enfermedades = "INSERT INTO enfermedades (id_persona, tipo_sangre, tipo_enfermedades, descripcion_enfermedades, alergias)
                            VALUES ('$id_persona', '$tipo_sangre', '$tipo_enfermedad', '$enfermedades', '$alergias')";
-    mysqli_query($conexion, $query_enfermedades);
-
-    // Insertar en la tabla "cliente"
-    $query_cliente = "INSERT INTO cliente (id_persona, tipo, foto, estado)
-                      VALUES ('$id_persona', '$tipo_paciente', '$ruta_foto', 1)";
-    mysqli_query($conexion, $query_cliente);
-    
+        mysqli_query($conexion, $query_enfermedades);
+        $codigo = "TRAB-" . $id_persona;
+        // Insertar en la tabla "cliente"
+        $query_cliente = "INSERT INTO trabajador (id_persona,id_estado_civil,id_sucursal, codigo_trabajador,codigo_inss, especialidades, foto,fecha_ingreso ,estado)
+                      VALUES ('$id_persona',1,1 ,'$codigo','$inss','$especialidad', '$ruta_foto',NOW(), 1)";
+        mysqli_query($conexion, $query_cliente);
+    }
 }
 ?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -77,7 +88,26 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </div><!-- /.container-fluid -->
     </section>
-
+    <div class="modal fade" id="modal-danger">
+        <div class="modal-dialog">
+            <div class="modal-content bg-danger">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cédula existente</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>La cédula ingresada ya existe en la base de datos.</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-outline-light" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -97,39 +127,45 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                     <div class="row">
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Nombre</label>
+                                                <label for="exampleInputEmail1">Nombre:</label>
                                                 <input type="text" name="nombre" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Apellido</label>
+                                                <label for="exampleInputEmail1">Apellido:</label>
                                                 <input type="text" name="apellido" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Cedula</label>
+                                                <label for="exampleInputEmail1">Cedula:</label>
                                                 <input type="text" name="cedula" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Teléfono</label>
-                                                <input type="text" name="telefono" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
+                                                <label for="exampleInputEmail1">Inss:</label>
+                                                <input type="text" name="inss" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Correo</label>
+                                                <label for="exampleInputEmail1">Teléfono:</label>
+                                                <input type="number" name="telefono" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">Correo:</label>
                                                 <input type="email" name="correo" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Nacionalidad</label>
+                                                <label for="exampleInputEmail1">Nacionalidad:</label>
 
-                                                <select name="nacionalidad" class="selectpicker form-control" id="nacionalidad" value="">
+                                                <select name="nacionalidad" class=" form-control select2bs4" id="nacionalidad" value="">
                                                     <optgroup label="América del Norte">
                                                         <option value="CA">Canadá</option>
                                                         <option value="US">Estados Unidos</option>
@@ -165,20 +201,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Direccion</label>
+                                                <label for="exampleInputEmail1">Direccion:</label>
                                                 <input type="text" class="form-control" name="direccion" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Fecha de nacimiento</label>
+                                                <label for="exampleInputEmail1">Fecha de nacimiento:</label>
                                                 <input type="date" name="fecha_nacimiento" class="form-control" id="exampleInputEmail1" placeholder="Ingresa Nombre">
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label style="font: bold 16px Arial, sans-serif;">Genero</label>
-                                                <select name="genero" class="selectpicker form-control" id="genero" value="">
+                                                <label style="font: bold 16px Arial, sans-serif;">Genero:</label>
+                                                <select name="genero" class="form-control select2bs4" id="genero" value="">
                                                     <option VALUE="F">Femenino</option>
                                                     <option VALUE="M">Masculino</option>
                                                     <Option value="O">Otro</OPTIOn>
@@ -187,61 +223,67 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Cargo</label>
-                                                <select name="tipo_paciente" class="selectpicker form-control" id="tipo_paciente">
-                                                    <option value="">Selecciona una opción</option>
-                                                    <option value="Nuevo">Nuevo</option>
-                                                    <option value="Reingreso">Contador</option>
-                                                    <option value="Emergencia">Secretaria</option>
-                                                    <option value="Pediátrico">Enfermera</option>
-                                                    <option value="Geriátrico">Camillero</option>
-                                                    <option value="Control/Preventivo">Médico</option>
-                                                    <!-- Agrega más opciones según los tipos de pacientes que tengas en tu clínica -->
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="exampleInputEmail1">Tipo de contrato</label>
-                                                <select name="tipo_sangre" class="selectpicker form-control" id="tipo_sangre" value="">
-                                                    <option value="">Selecciona una opción</option>
-                                                    <optgroup label="Contrato">
-                                                        <option value="indeterminado">Contrato indeterminado</option>
-                                                        <option value="determinado">Contrato determinado</option>
-                                                        <option value="temporal">Contrato tempooral</option>
-                                                        <option value="periodo de prueba">Contrato periodo de prueba</option>
-                                                    </optgroup>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
                                                 <label for="exampleInputEmail1">Estado Civil</label>
-                                                <select name="tipo_enfermedad" class="selectpicker form-control" id="tipo_sangre" value="">
+                                                <select name="tipo_enfermedad" class="form-control select2bs4" id="tipo_sangre" value="">
                                                     <option value="">Selecciona una opción</option>
-                                                    <option value="casada">casada</option>
-                                                    <option value="soltera">soltera</option>
-                                                    <option value="Comprometida">Comprometida</option>
+
+                                                    <?php
+                                                    // Paso 1: Establecer la conexión a la base de datos
+                                                    $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
+
+                                                    // Verificar si la conexión fue exitosa
+                                                    if (mysqli_connect_errno()) {
+                                                        echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+                                                        exit;
+                                                    }
+
+                                                    // Paso 2: Ejecutar la consulta SQL
+                                                    $resultado = mysqli_query($conexion, "SELECT id, nombre FROM estado_civil");
+
+                                                    // Paso 3: Recorrer los resultados y generar las opciones
+                                                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                                                        echo "<option value='" . $fila['id'] . "'>" . $fila['nombre'] . "</option>";
+                                                    }
+
+                                                    // Paso 4: Cerrar la etiqueta del select
+                                                    ?>
+
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Especialidades</label>
-                                                <textarea type="text" class="form-control" name="alergias" id="exampleInputEmail1" placeholder="Enfermedades"></textarea>
+                                                <label for="exampleInputEmail1">Tipo de sangre:</label>
+                                                <select name="tipo_sangre" class="form-control select2bs4" id="tipo_sangre" value="">
+                                                    <option value="">Selecciona una opción</option>
 
+                                                    <?php
+                                                    // Paso 1: Establecer la conexión a la base de datos
+                                                    $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
+
+                                                    // Verificar si la conexión fue exitosa
+                                                    if (mysqli_connect_errno()) {
+                                                        echo "Error en la conexión a la base de datos: " . mysqli_connect_error();
+                                                        exit;
+                                                    }
+
+                                                    // Paso 2: Ejecutar la consulta SQL
+                                                    $resultado = mysqli_query($conexion, "SELECT id, nombre FROM tipos_sangre");
+
+                                                    // Paso 3: Recorrer los resultados y generar las opciones
+                                                    while ($fila = mysqli_fetch_assoc($resultado)) {
+                                                        echo "<option value='" . $fila['id'] . "'>" . $fila['nombre'] . "</option>";
+                                                    }
+
+                                                    // Paso 4: Cerrar la etiqueta del select
+                                                    ?>
+
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <div class="form-group">
-                                                <label for="exampleInputEmail1">Descripcion de Especialidades</label>
-                                                <textarea type="text" class="form-control" name="enfermedades" id="exampleInputEmail1" placeholder="Enfermedades"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="exampleInputFile">Foto</label>
+                                                <label for="exampleInputFile">Foto:</label>
                                                 <div class="input-group">
                                                     <div class="custom-file">
                                                         <input type="file" name="foto" class="custom-file-input" id="exampleInputFile">
@@ -251,6 +293,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                                         <span class="input-group-text">Cargar</span>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">Foto record policia:</label>
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" name="foto_record" class="custom-file-input" id="exampleInputFile">
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">Cargar</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">Descripcion de antecedentes</label>
+                                                <textarea class="form-control">
+                                                </textarea>                
                                             </div>
                                         </div>
 

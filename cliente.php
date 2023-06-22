@@ -2,12 +2,39 @@
 require_once "include/header.php";
 $conexion = mysqli_connect("localhost", "root", "", "clinica_medica");
 // Realizar la consulta para obtener los datos
-$query = "SELECT p.nombre, pn.apellido, pn.fecha_nacimiento, pn.cedula, pn.genero, p.telefono, p.direccion_domicilio, p.correo,
-p.nacionalidad, c.tipo, c.foto, e.tipo_sangre, e.tipo_enfermedades, e.descripcion_enfermedades, e.alergias, c.id AS id_cliente
+$query = "SELECT
+p.nombre AS persona_nombre,
+p.telefono,
+p.direccion_domicilio,
+p.correo,
+p.nacionalidad,
+p.fecha_registro,
+pn.apellido,
+pn.fecha_nacimiento,
+pn.cedula,
+pn.genero,
+e.nombre AS enfermedad_nombre,
+e.descripcion AS enfermedad_descripcion,
+ts.nombre AS tipo_sangre_nombre,
+tp.nombre AS tipo_alergia_nombre,
+tp.descripcion AS tipo_alergia_descripcion,
+a.nombre AS alergia_nombre,
+a.descripcion AS alergia_descripcion,
+c.codigo_inss,
+c.tipo,
+c.foto,
+c.id AS id_cliente,
+c.estado
 FROM persona p
-INNER JOIN persona_natural pn ON p.id = pn.id_persona
-INNER JOIN cliente c ON p.id= c.id_persona
-INNER JOIN enfermedades e ON p.id = e.id_persona";
+LEFT JOIN persona_natural pn ON p.id = pn.id_persona
+LEFT JOIN enfermedades_personas ep ON p.id = ep.id_persona
+LEFT JOIN enfermedades e ON ep.id_enfermedades = e.id
+LEFT JOIN sangre_personas sp ON p.id = sp.id_persona
+LEFT JOIN tipos_sangre ts ON sp.id_tipos_sangre = ts.id
+LEFT JOIN alergias_personas ap ON p.id = ap.id_persona
+LEFT JOIN alergias a ON ap.id_alergias = a.id
+LEFT JOIN tipo_alergias tp ON a.id_tipo = tp.id
+LEFT JOIN cliente c ON p.id = c.id_persona";
 
 $resultado = mysqli_query($conexion, $query);
 
@@ -73,7 +100,7 @@ $resultado = mysqli_query($conexion, $query);
                                     if ($resultado && mysqli_num_rows($resultado) > 0) {
                                         while ($fila = mysqli_fetch_assoc($resultado)) {
                                             echo "<tr>
-                                                <td>" . $fila['nombre'] . "</td>
+                                                <td>" . $fila['persona_nombre'] . "</td>
                                                 <td>" . $fila['apellido'] . "</td>
                                                 <td>" . $fila['fecha_nacimiento'] . "</td>
                                                 <td>" . $fila['cedula'] . "</td>
@@ -86,10 +113,10 @@ $resultado = mysqli_query($conexion, $query);
                                                 <td>" . $fila['nacionalidad'] . "</td>
                                                 <td>" . $fila['tipo'] . "</td>
                                                 <td><img src='" . $fila['foto'] . "' width='100'></td>
-                                                <td>" . $fila['tipo_sangre'] . "</td>
-                                                <td>" . $fila['tipo_enfermedades'] . "</td>
-                                                <td>" . $fila['descripcion_enfermedades'] . "</td>
-                                                <td>" . $fila['alergias'] . "</td>
+                                                <td>" . $fila['tipo_sangre_nombre'] . "</td>
+                                                <td>" . $fila['enfermedad_nombre'] . "</td>
+                                                <td>" . $fila['enfermedad_descripcion'] . "</td>
+                                                <td>" . $fila['alergia_nombre'] . "</td>
                                             </tr>";
                                         }
                                     } else {

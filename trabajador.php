@@ -60,7 +60,6 @@ $db->close();
                                         <th>Apellido</th>
                                         <th>Codigo Inss</th>
                                         <th>Telefono</th>
-                                        <th>Especialidad</th>
                                         <th>Direccion</th>
                                         <th>Correo</th>
                                         <th>Estado</th>
@@ -75,7 +74,7 @@ $db->close();
                                             <td><?php echo $row['apellido']; ?></td>
                                             <td><?php echo $row['codigo_inss']; ?></td>
                                             <td><?php echo $row['telefono']; ?></td>
-                                            <td><?php echo $row['especialidades']; ?></td>
+                                           
                                             <td><?php echo $row['direccion_domicilio']; ?></td>
                                             <td><?php echo $row['correo']; ?></td>
                                             <td>
